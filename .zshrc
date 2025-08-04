@@ -80,5 +80,5 @@ eval "$(zoxide init --cmd cd zsh)"
 
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
-. "$HOME/.local/bin/env"
+#. "$HOME/.local/bin/env"
 
