@@ -5,6 +5,17 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+# --- user paths -------------------------------------------------------------
+case ":$PATH:" in
+    *":$HOME/.local/bin:"*) ;;
+    *) PATH="$HOME/.local/bin:$PATH" ;;
+esac
+case ":$PATH:" in
+    *":$HOME/bin:"*) ;;
+    *) PATH="$PATH:$HOME/bin" ;;
+esac
+export PATH
+
 # --- history ----------------------------------------------------------------
 HISTSIZE=5000
 HISTFILESIZE=20000
