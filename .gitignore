@@ -1,0 +1,2 @@
+# TPM clones here if run without TMUX_PLUGIN_MANAGER_PATH set
+.config/tmux/plugins/
