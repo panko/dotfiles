@@ -11,8 +11,9 @@ config.initial_cols = 140
 config.initial_rows = 32
 
 -- or, changing the font size and color scheme.
+config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular" })
 config.font_size = 16
-config.color_scheme = "JetBrainsMonoNLNerdFontMono-Regular"
+config.color_scheme = "Catppuccin Mocha"
 
 -- Finally, return the configuration to wezterm:
 return config
