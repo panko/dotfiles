@@ -14,6 +14,7 @@ Neovim (LazyVim) and WezTerm.
 | `.config/nvim` | LazyVim, pinned by `lazy-lock.json` |
 | `.config/nvim/lua/plugins/lang.lua` | Python LSP via jedi + ruff (no npm) |
 | `.wezterm.lua` | WezTerm |
+| `AGENTS.md` | OpenCode instructions for this host / home lab |
 
 ## Install on Fedora Kinoite / Silverblue
 
