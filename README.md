@@ -61,6 +61,9 @@ export PATH="$HOME/.opencode/bin:$PATH"
 - `t` attaches to session `main`, creating it if it does not exist (`t work`
   for a named session). No auto-attach in shell rc, so `ssh host cmd` and
   `scp` keep working.
+- The status bar shows a host badge on the bottom right (`#{host_short}`, or
+  `@host_badge` from `~/.tmux.local.conf`). Set friendly names per machine:
+  `vago`, `mac`, `fold` — Termux otherwise reports `localhost`.
 - Machine-specific tmux options go in `~/.tmux.local.conf` (untracked, sourced
   if present). Example on an always-on desktop:
   `set -g @continuum-boot 'on'` plus
