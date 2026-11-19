@@ -58,6 +58,15 @@ export PATH="$HOME/.opencode/bin:$PATH"
 
 ## First launch
 
+- `t` attaches to session `main`, creating it if it does not exist (`t work`
+  for a named session). No auto-attach in shell rc, so `ssh host cmd` and
+  `scp` keep working.
+- Machine-specific tmux options go in `~/.tmux.local.conf` (untracked, sourced
+  if present). Example on an always-on desktop:
+  `set -g @continuum-boot 'on'` plus
+  `set -g @continuum-systemd-start-cmd 'new-session -d -s scratch'`; continuum
+  then writes and enables `~/.config/systemd/user/tmux.service`.
+
 - Neovim installs ~43 plugins plus the mason tools on first start; `:Lazy sync`
   re-runs it. Python gets jedi-language-server + ruff.
 - tmux plugins live in `~/.tmux/plugins` (pinned in `tmux.conf`, because TPM 3.x

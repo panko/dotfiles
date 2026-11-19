@@ -19,3 +19,12 @@ alias ls='ls --color=auto'
 alias ll='ls -alh'
 alias vim='nvim'
 alias c='clear'
+
+# tmux: attach to a session, creating it if needed (`t`, `t work`).
+t() {
+    if ! command -v tmux >/dev/null 2>&1; then
+        echo "tmux is not installed" >&2
+        return 1
+    fi
+    tmux new-session -A -s "${1:-main}"
+}
