@@ -10,6 +10,7 @@ Neovim (LazyVim) and WezTerm.
 | `.bashrc`, `.bash_profile` | bash: history, fzf, zoxide, completion, git prompt |
 | `.zshrc`, `.zprofile` | zsh + zinit + powerlevel10k (macOS) |
 | `.aliases` | aliases shared by both shells |
+| `.bashrc.termux` | Termux-only prompt/env, sourced from `~/.bashrc` on the phone |
 | `.config/tmux/tmux.conf` | tmux: `C-Space` prefix, vim pane nav, catppuccin, TPM |
 | `.config/nvim` | LazyVim, pinned by `lazy-lock.json` |
 | `.config/nvim/lua/plugins/lang.lua` | Python LSP via jedi + ruff (no npm) |
@@ -48,7 +49,8 @@ Notes:
 ## Per-machine settings
 
 Host-specific config is not tracked. Put it in `~/.bashrc.local` (sourced by
-`.bashrc` if present) or `~/.bashrc.d/*`:
+`.bashrc` if present), `~/.bashrc.d/*`, or `~/.zshrc.local` (sourced by
+`.zshrc`). Keep tokens and API keys there, never in a tracked file.
 
 ```bash
 export PATH="$HOME/.opencode/bin:$PATH"

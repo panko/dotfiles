@@ -82,3 +82,6 @@ export PATH="$PATH:/opt/nvim-linux64/bin"
 
 #. "$HOME/.local/bin/env"
 
+# Per-machine overrides (not tracked): tokens, PATHs, work tooling.
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+

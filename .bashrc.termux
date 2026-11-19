@@ -1,0 +1,9 @@
+# Termux (phone) overrides, sourced from ~/.bashrc on Android.
+# Everything else comes from the shared .bashrc.
+
+# Compact prompt: the Termux window is narrow, so no git segment here.
+PS1='\[\e[0;32m\]prike@fold\[\e[0m\] \[\e[0;97m\]\w\[\e[0m\] \$ '
+
+# tmux is installed from the Termux repo; keep its config in sync.
+export EDITOR=nvim
+export VISUAL=nvim
