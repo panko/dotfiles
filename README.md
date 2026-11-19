@@ -72,6 +72,27 @@ export PATH="$HOME/.opencode/bin:$PATH"
 The zsh config is kept for macOS (oh-my-zsh snippets, zinit, powerlevel10k) and
 is not used on Fedora.
 
+## Termux (phone)
+
+`tmux` runs inside the Termux terminal, so it never covers Android UI: the
+status bar is one terminal row, and Termux's app-level gestures (extra-keys row,
+font zoom, long-press menu) still work. What *does* change is mouse reporting:
+`set -g mouse on` makes Termux turn touches into mouse events, so a swipe or
+drag can be eaten by tmux (pane switch, copy-mode selection) instead of the
+terminal. `tmux.conf` therefore turns mouse mode off when `$TERMUX_VERSION` is
+set and keeps it on for desktop terminals.
+
+Clipboard on the phone: if the `termux-api` package and the Termux:API app are
+installed, `termux-clipboard-set` is used; otherwise tmux falls back to OSC 52
+(`set-clipboard on`), which the Termux emulator handles itself. The same chain
+covers Wayland (`wl-copy`), X11 (`xclip`) and macOS (`pbcopy`).
+
+```bash
+pkg install tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+ln -sf ~/dotfiles/.config/tmux/tmux.conf ~/.config/tmux/tmux.conf
+```
+
 ## Extras
 
 ### GNOME Terminal catppuccin colour
