@@ -112,10 +112,20 @@ that project's own `AGENTS.md`.
   plus `vago.network`; systemd generates the user units. Config/data lives in
   `~/containers/<name>/`.
 - Running: `homepage` (Caddy, 127.0.0.1:8080), `gatus` (8082), `qbittorrent`
-  (8081), `diun`, `beszel` (8090), `beszel-agent`.
-- `dozzle` is currently failed because it also wants 8081 (conflict with
-  qbittorrent). `llamacpp` (tailnet :8088) and `ollama` (11434) quadlets exist
-  but are inactive. `librechat*` and `zeroclaw` are disabled.
+  (8081), `dozzle` (8083, `/logs`), `diun`, `beszel` (8090), `beszel-agent`.
+- `dozzle` runs on 8083 with `DOZZLE_BASE=/logs` and `SecurityLabelDisable=true`
+  (quadlet `label=type:disable` does not work on this host).
+  `llamacpp` (tailnet :8088) and `ollama` (11434) quadlets exist but are
+  inactive. `librechat*` and `zeroclaw` are disabled, so their homepage cards
+  stay red (502).
+- Homepage extras: `homepage-stats.timer` (30s) writes
+  `~/containers/homepage/site/host.json` (CPU/mem/disk/temp/containers, plus
+  the newest Beszel sample); `homepage-uptime.timer` (5min) writes
+  `site/uptime.json` from Gatus' `endpoint_uptimes`. `generate.py` rebuilds
+  `site/index.html` and the Caddyfile from `services.list`; reload Caddy with
+  `podman exec homepage caddy reload --config /etc/caddy/Caddyfile`.
+  qBittorrent's WebUI whitelists `10.89.0.0/24` (the podman bridge), so the
+  homepage can read `/torrent/api/v2/*` without credentials.
 - Manage via quadlets, not ad-hoc `podman run`:
   `systemctl --user status <name>`, edit the `.container`, then
   `systemctl --user daemon-reload && systemctl --user restart <name>`.
