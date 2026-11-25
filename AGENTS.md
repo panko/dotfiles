@@ -18,6 +18,37 @@ that project's own `AGENTS.md`.
   (`ll`, `gs`, `g`, `vim`→`nvim`, `dl`, …). Machine-specific settings live in
   `~/.bashrc.local` and `~/.bashrc.d/` and are not tracked.
 
+## Keyboard (macOS-style remap)
+
+- The keyboard is shared with a Mac through a KVM; the Linux side is remapped
+  so macOS shortcut muscle memory works on vago. The Mac side is untouched.
+- Live config is `~/.config/kxkbrc` (Plasma/KWin xkb options, **not** tracked by
+  stow — recreate it from this block after a reinstall):
+
+  ```ini
+  [Layout]
+  LayoutList=us
+  Model=pc105
+  Options=ctrl:swap_lalt_lctl
+  Use=true
+  ```
+
+- `ctrl:swap_lalt_lctl` = "Swap the functions of the left Alt key and the left
+  Ctrl key": far-left `Ctrl`→Alt/Option, middle `Win`→Super (KDE Meta keeps
+  working), key next to spacebar (`Alt`)→Ctrl, i.e. the Mac Command position.
+- Applies only at KWin start: log out/in after editing. Verify with
+  `kreadconfig6 --file ~/.config/kxkbrc --group Layout --key Options`; a live
+  `org.kde.KWin.reconfigure` does **not** reload xkb.
+- Because the far-left key now sends Alt, KDE's Alt-based shortcuts (Alt+Tab,
+  Alt+F2, Alt+F4) moved to the far-left key. Rebind them to Meta+… in System
+  Settings → Shortcuts if that gets annoying.
+- Not used, but known-good alternatives: `altwin:ctrl_win` (Win/Cmd→Ctrl,
+  removes the Super key entirely) and `ctrl:swap_lwin_lctl` (Win↔Ctrl swap).
+  Plain xkb cannot make one key emit both Command and Ctrl; that needs
+  `kanata` (not installed) as a user service.
+- Undo: `kwriteconfig6 --file kxkbrc --group Layout --key Options ''`, then log
+  out/in.
+
 ## Ground rules
 
 - Prefer read-only inspection first. Ask before state-changing or destructive
