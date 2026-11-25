@@ -1,0 +1,19 @@
+[Unit]
+Description=Dozzle Log Viewer
+After=network-online.target
+
+[Container]
+Image=ghcr.io/amir20/dozzle:latest
+ContainerName=dozzle
+PublishPort=127.0.0.1:8083:8080
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+SecurityLabelDisable=true
+Network=vago.network
+Environment=DOZZLE_BASE=/logs
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

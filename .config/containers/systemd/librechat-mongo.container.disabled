@@ -1,0 +1,17 @@
+[Unit]
+Description=LibreChat MongoDB
+After=network-online.target
+
+[Container]
+Image=docker.io/library/mongo:7
+ContainerName=librechat-mongo
+Volume=mongo-data:/data/db
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=180
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=Beszel Hub
+After=network-online.target
+
+[Container]
+Image=docker.io/henrygd/beszel:latest
+ContainerName=beszel
+PublishPort=127.0.0.1:8090:8090
+Volume=%h/containers/beszel/data:/beszel_data:Z
+Volume=%h/containers/beszel/socket:/beszel_socket:Z
+Environment=APP_URL=https://vago.tail601dbf.ts.net/beszel
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=60
+
+[Install]
+WantedBy=default.target

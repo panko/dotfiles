@@ -1,0 +1,25 @@
+[Unit]
+Description=qBittorrent-nox (headless torrent client)
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=lscr.io/linuxserver/qbittorrent:latest
+ContainerName=qbittorrent
+PublishPort=127.0.0.1:8081:8081
+Environment=PUID=1000
+Environment=PGID=1000
+Environment=TZ=Europe/Budapest
+Environment=WEBUI_PORT=8081
+Environment=TORRENTING_PORT=6881
+Volume=%h/containers/qbittorrent/config:/config:Z
+Volume=%h/torrents:/downloads:Z
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

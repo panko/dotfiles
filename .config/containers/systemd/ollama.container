@@ -1,0 +1,24 @@
+[Unit]
+Description=Ollama local LLM (ROCm, RX 6600)
+After=network-online.target
+
+[Container]
+Image=docker.io/ollama/ollama:rocm
+ContainerName=ollama
+PublishPort=127.0.0.1:11434:11434
+Volume=ollama-data:/root/.ollama
+AddDevice=/dev/dri:/dev/dri
+AddDevice=/dev/kfd:/dev/kfd
+Environment=HSA_OVERRIDE_GFX_VERSION=10.3.0
+Environment=OLLAMA_NUM_PARALLEL=2
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target
+ShmSize=8g
+Environment=HSA_ENABLE_SDMA=0

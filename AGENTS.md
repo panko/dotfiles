@@ -110,7 +110,11 @@ that project's own `AGENTS.md`.
 
 - Rootless Podman quadlets live in `~/.config/containers/systemd/*.container`
   plus `vago.network`; systemd generates the user units. Config/data lives in
-  `~/containers/<name>/`.
+  `~/containers/<name>/`. The quadlets themselves are tracked in dotfiles
+  (`.config/containers/systemd/`) and stow-linked — edit there, then
+  `stow --target="$HOME" .` from `~/dotfiles` and `systemctl --user daemon-reload`.
+  `~/containers` is the separate private repo `vago-containers` (app config,
+  homepage generator, timers).
 - Running: `homepage` (Caddy, 127.0.0.1:8080), `gatus` (8082), `qbittorrent`
   (8081), `dozzle` (8083, `/logs`), `diun`, `beszel` (8090), `beszel-agent`.
 - `dozzle` runs on 8083 with `DOZZLE_BASE=/logs` and `SecurityLabelDisable=true`

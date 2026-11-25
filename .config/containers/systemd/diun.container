@@ -1,0 +1,17 @@
+[Unit]
+Description=Diun update notifier
+After=network-online.target
+
+[Container]
+Image=docker.io/crazymax/diun:latest
+ContainerName=diun
+Volume=%h/containers/diun/config.yml:/diun.yml:ro,Z
+Volume=%h/containers/diun/data:/data:Z
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

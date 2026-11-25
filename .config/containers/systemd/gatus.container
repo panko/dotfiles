@@ -1,0 +1,18 @@
+[Unit]
+Description=Gatus service monitor
+After=network-online.target
+
+[Container]
+Image=ghcr.io/twin/gatus:latest
+ContainerName=gatus
+PublishPort=127.0.0.1:8082:8080
+Volume=%h/containers/gatus/config:/config:ro,Z
+Volume=%h/containers/gatus/data:/data:Z
+Environment=GATUS_CONFIG_PATH=/config/config.yaml
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=vago homescreen (Caddy)
+After=network-online.target beszel.service
+
+[Container]
+Image=docker.io/library/caddy:2-alpine
+ContainerName=homepage
+PublishPort=127.0.0.1:8080:80
+Volume=%h/containers/homepage/Caddyfile:/etc/caddy/Caddyfile:ro,Z
+Volume=%h/containers/homepage/site:/srv:Z
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

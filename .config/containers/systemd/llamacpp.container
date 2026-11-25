@@ -1,0 +1,20 @@
+[Unit]
+Description=llama.cpp server (Vulkan, RX 6600)
+After=network-online.target
+
+[Container]
+Image=ghcr.io/ggml-org/llama.cpp:server-vulkan
+ContainerName=llamacpp
+PublishPort=100.121.176.29:8088:8080
+Volume=%h/containers/llamacpp/models:/models:ro,Z
+AddDevice=/dev/dri:/dev/dri
+Exec=--model /models/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf --alias qwen3-coder --host 0.0.0.0 --port 8080 --ctx-size 32768 --n-gpu-layers 99
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

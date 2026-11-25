@@ -1,0 +1,26 @@
+[Unit]
+Description=Beszel Agent (local, websocket mode)
+After=beszel.service
+Wants=beszel.service
+
+[Container]
+Image=docker.io/henrygd/beszel-agent:latest
+ContainerName=beszel-agent
+Volume=%h/containers/beszel/socket:/beszel_socket:Z
+Volume=%h/containers/beszel/agent-data:/var/lib/beszel-agent:Z
+Volume=/run/user/1000/podman/podman.sock:/run/user/1000/podman/podman.sock:ro
+Volume=/proc:/host/proc:ro
+Volume=/sys:/host/sys:ro
+SecurityLabelType=container_runtime_t
+EnvironmentFile=%h/containers/beszel/agent.env
+Environment=HUB_URL=http://beszel:8090
+Environment=LISTEN=45876
+Environment=DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+Network=vago.network
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

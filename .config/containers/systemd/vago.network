@@ -1,0 +1,5 @@
+[Unit]
+Description=vago services network
+
+[Network]
+Driver=bridge
