@@ -120,8 +120,9 @@ that project's own `AGENTS.md`.
 - `dozzle` runs on 8083 with `DOZZLE_BASE=/logs` and `SecurityLabelDisable=true`
   (quadlet `label=type:disable` does not work on this host).
   `llamacpp` (tailnet :8088) and `ollama` (11434) quadlets exist but are
-  inactive. `librechat*` and `zeroclaw` are disabled, so their homepage cards
-  stay red (502).
+  inactive. `librechat*` and `zeroclaw` were retired: their quadlets and
+  homepage/gatus entries are gone, but the `mongo-data`/`zeroclaw-data`
+  volumes and `~/containers/{librechat,zeroclaw}` were left in place.
 - Homepage extras: `homepage-stats.timer` (30s) writes
   `~/containers/homepage/site/host.json` (CPU/mem/disk/temp/containers, plus
   the newest Beszel sample); `homepage-uptime.timer` (5min) writes
