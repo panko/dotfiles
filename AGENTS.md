@@ -121,6 +121,11 @@ that project's own `AGENTS.md`.
   Images carry `io.containers.autoupdate=registry`; don't prune images blindly.
 - Important user services: `syncthing.service` (active), `tuya-meter-rs.service`
   (active, 127.0.0.1:8787), `tuya-meter.service` (inactive fallback).
+- Phone/tailnet access is one hostname, no per-app ports:
+  `https://vago.tail601dbf.ts.net/` (homepage), `/gatus`, `/meter`, `/beszel/`,
+  `/torrent/` (last two proxied by the homepage Caddy). `tailscale serve --bg
+  --set-path /meter http://127.0.0.1:8787` etc.; the old `:8443` qbittorrent
+  mount is gone. Keep new apps on paths, not ports.
   Bitwarden autostarts via XDG autostart.
 
 ## Projects
