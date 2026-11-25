@@ -15,6 +15,8 @@ Neovim (LazyVim) and WezTerm.
 | `.config/nvim` | LazyVim, pinned by `lazy-lock.json` |
 | `.config/nvim/lua/plugins/lang.lua` | Python LSP via jedi + ruff (no npm) |
 | `.wezterm.lua` | WezTerm |
+| `.config/kanata/kanata.kbd` | kanata: macOS-style key layout on the KVM keyboard |
+| `.config/systemd/user/kanata.service` | user service that keeps kanata running |
 | `AGENTS.md` | OpenCode instructions for this host / home lab |
 
 ## Install on Fedora Kinoite / Silverblue

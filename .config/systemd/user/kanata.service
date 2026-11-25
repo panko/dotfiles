@@ -1,0 +1,17 @@
+[Unit]
+Description=kanata keyboard remapper (macOS-style layout)
+Documentation=https://github.com/jtroo/kanata/blob/main/docs/config.adoc
+# /dev/input/event* access comes from membership in the input group;
+# /dev/uinput access comes from the logind uaccess ACL.
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/kanata --cfg %h/.config/kanata/kanata.kbd --no-wait --wait-device-ms 1000
+# The keyboard disappears when the KVM is switched to the Mac, so kanata exits
+# and must be restarted once the device is back.
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

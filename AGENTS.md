@@ -20,34 +20,35 @@ that project's own `AGENTS.md`.
 
 ## Keyboard (macOS-style remap)
 
-- The keyboard is shared with a Mac through a KVM; the Linux side is remapped
-  so macOS shortcut muscle memory works on vago. The Mac side is untouched.
-- Live config is `~/.config/kxkbrc` (Plasma/KWin xkb options, **not** tracked by
-  stow — recreate it from this block after a reinstall):
-
-  ```ini
-  [Layout]
-  LayoutList=us
-  Model=pc105
-  Options=ctrl:swap_lalt_lctl
-  Use=true
-  ```
-
-- `ctrl:swap_lalt_lctl` = "Swap the functions of the left Alt key and the left
-  Ctrl key": far-left `Ctrl`→Alt/Option, middle `Win`→Super (KDE Meta keeps
-  working), key next to spacebar (`Alt`)→Ctrl, i.e. the Mac Command position.
-- Applies only at KWin start: log out/in after editing. Verify with
-  `kreadconfig6 --file ~/.config/kxkbrc --group Layout --key Options`; a live
-  `org.kde.KWin.reconfigure` does **not** reload xkb.
-- Because the far-left key now sends Alt, KDE's Alt-based shortcuts (Alt+Tab,
-  Alt+F2, Alt+F4) moved to the far-left key. Rebind them to Meta+… in System
-  Settings → Shortcuts if that gets annoying.
-- Not used, but known-good alternatives: `altwin:ctrl_win` (Win/Cmd→Ctrl,
-  removes the Super key entirely) and `ctrl:swap_lwin_lctl` (Win↔Ctrl swap).
-  Plain xkb cannot make one key emit both Command and Ctrl; that needs
-  `kanata` (not installed) as a user service.
-- Undo: `kwriteconfig6 --file kxkbrc --group Layout --key Options ''`, then log
-  out/in.
+- The keyboard is shared with a Mac through a KVM; the Linux side reproduces
+  the macOS layout and shortcut feel on vago. The Mac side is untouched.
+- Done with **kanata 1.12.0** (`~/.local/bin/kanata`, userspace via `/dev/uinput`),
+  not xkb: plain xkb cannot make one key act as both Command and Ctrl.
+  Tracked in dotfiles:
+  - `.config/kanata/kanata.kbd` — the remap config
+  - `.config/systemd/user/kanata.service` — enabled user service,
+    `Restart=always` because the device disappears on every KVM switch
+- Requires `prike` in the `input` group (`/dev/input/event*` is `root:input`
+  0660 with **no** uaccess ACL): `sudo usermod -aG input prike`, then re-login.
+  `/dev/uinput` itself is writable via the uaccess ACL from
+  `40-kdeconnect-uinput.rules`.
+- Positions: far-left `Ctrl`→Control, middle `Win`→Option/Alt, key next to
+  spacebar (`Alt`)→Command, emitted as Ctrl so app shortcuts work. Right side
+  mirrored (`RAlt`=Command, `RWin`=Option, `RCtrl`=Control). `Caps Lock` tap =
+  Caps Lock, hold = Super (KDE Meta shortcuts).
+- macOS-isms layered on top: `Cmd+Tab`→`Alt+Tab`, `Cmd+`` ` ``→`Alt+`` ` ``,
+  `Cmd+Space`→`Alt+F1` (launcher), `Cmd+←/→`→`Home`/`End`, `Cmd+↑/↓`→
+  `Ctrl+Home/End`, `Option+←/→`→`Ctrl+←/→` (word jump), `Option+Backspace`/
+  `Option+Delete`→`Ctrl+Backspace`/`Ctrl+Delete` (word delete).
+- `~/.config/kxkbrc` must **not** set xkb Alt/Ctrl options anymore — that would
+  remap kanata's output a second time. It was deleted (KDE defaults: us/pc105).
+- Ops: `systemctl --user status kanata`, `journalctl --user -u kanata`,
+  validate edits with `kanata --check --cfg ~/.config/kanata/kanata.kbd`,
+  list grabbable devices with `kanata -l`. Emergency exit is
+  `LCtrl+Space+Esc` (kanata quits, keyboard reverts to stock until restarted).
+- Undo: `systemctl --user disable --now kanata`.
+- Earlier xkb-only attempts (superseded, kept for reference): `altwin:ctrl_win`,
+  `ctrl:swap_lwin_lctl`, `ctrl:swap_lalt_lctl`.
 
 ## Ground rules
 
@@ -70,7 +71,7 @@ that project's own `AGENTS.md`.
 - `~/dotfiles` is a GNU Stow package; the dotfiles in `~` are symlinks into it.
   Edit the canonical file in `~/dotfiles`, then from that directory run:
   `stow --target="$HOME" .` (dry run first: `stow -n -v .`).
-- Tracked: bash/zsh, `.aliases`, tmux, LazyVim, WezTerm. `.stow-local-ignore`
+- Tracked: bash/zsh, `.aliases`, tmux, LazyVim, WezTerm, kanata. `.stow-local-ignore`
   excludes README/LICENSE/git metadata.
 - OpenCode config: `~/.config/opencode/` (`cli.json`, `service.json`, `skills/`).
   Skills are `~/.config/opencode/skills/<id>/SKILL.md` with frontmatter

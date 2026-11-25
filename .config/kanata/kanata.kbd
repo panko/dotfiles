@@ -1,0 +1,72 @@
+;; kanata.kbd - macOS-style layout for vago
+;;
+;; Physical keys (KVM keyboard shared with a Mac):
+;;   far left = Ctrl   middle = Win   next to space = Alt
+;; macOS keys:
+;;   Control        Option             Command
+;;
+;; Result:
+;;   far left        -> Control            (Mac Control position)
+;;   middle          -> Alt / Option       (Mac Option position)
+;;   next to space   -> Command, emitted as Control (app shortcuts work)
+;;   right side mirrored: RAlt = Command, RWin = Option, RCtrl = Control
+;;   Caps Lock tap   -> Caps Lock, held -> Super (KDE Meta shortcuts)
+
+(defcfg
+  process-unmapped-keys no
+  linux-device-detect-mode keyboard-only
+  linux-dev-names-exclude (
+    "C-Media Electronics Inc. USB Audio Device"
+    "Video Bus"
+    "Power Button"
+    "PC Speaker"
+  )
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+  left down up   rght del
+)
+
+;; Command (both sides): hold Control + activate the command layer.
+;; Option (both sides):  hold Alt     + activate the option layer.
+;; Caps Lock: tap = Caps Lock, hold = Super.
+(defalias
+  cmdk (multi lctl (layer-while-held cmd))
+  optk (multi lalt (layer-while-held opt))
+  caps (multi f24 (tap-hold 200 150 caps lmet))
+)
+
+(deflayer base
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @caps a   s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl @optk @cmdk         spc            @cmdk @optk lctl
+  left down up   rght del
+)
+
+;; Command layer: plain letters already send Control+<key>; only the keys
+;; whose macOS meaning differs from Linux need an override.
+(deflayer cmd
+  (unmod (lctl) lalt grv) _ _ _ _ _ _ _ _ _ _ _ _ _
+  (unmod (lctl) lalt tab) _ _ _ _ _ _ _ _ _ _ _ _ _
+  _    _   _   _   _   _   _   _   _   _   _   _   _
+  _    _   _   _   _   _   _   _   _   _   _   _
+  _    _    _             (unmod (lctl) lalt f1)      _    _    _
+  (unmod (lctl) home) end home (unmod (lctl) end) _
+)
+
+;; Option layer: macOS Option+arrows/delete move by word -> Control in Linux.
+(deflayer opt
+  _ _ _ _ _ _ _ _ _ _ _ _ _ (unmod (lalt) lctl bspc)
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _                 _          _ _ _
+  (unmod (lalt) lctl left) _ _ (unmod (lalt) lctl rght) (unmod (lalt) lctl del)
+)
